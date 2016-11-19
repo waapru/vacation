@@ -21,13 +21,6 @@ class shopVacationPlugin extends shopPlugin
 			$data[$k] = isset($customer[$v]) ? $customer[$v] : false;
 		if ( count(array_filter($data)) == 3 )
 		{
-			foreach ( $settings as $k=>$v )
-			{
-				$a = explode('.',$data[$k]);
-				$b = array_pop($a);
-				$a[] = '20'.$b;
-				$data[$k] = date('Y-m-d H:i:s',implode('.',$a));
-			}
 			$m = new shopVacationPluginDateModel;
 			$m->insert($data);
 		}
