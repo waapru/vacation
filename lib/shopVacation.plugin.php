@@ -27,15 +27,21 @@ class shopVacationPlugin extends shopPlugin
 	/* event: backend_order */
 	public function backendOrder($order)
 	{
+		return array(
+			'info_section' => 'Vacation: '.self::dates($order['id'])
+		);
+	}
+	
+	
+	static function dates($order_id)
+	{
 		$html = '';
-		if ( $data = self::m()->getByField('order_id',$order['id']) )
+		if ( $data = self::m()->getByField('order_id',$order_id) )
 		{
 			extract($data);
-			$html = "Vacation: $start - $finish";
+			$html = "$start - $finish";
 		}
-		return array(
-			'info_section' => $html
-		);
+		return $html;
 	}
 	
 	
