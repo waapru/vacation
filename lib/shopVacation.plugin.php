@@ -20,10 +20,7 @@ class shopVacationPlugin extends shopPlugin
 		foreach ( $settings as $k=>$v )
 			$data[$k] = isset($customer[$v]) ? $customer[$v] : false;
 		if ( count(array_filter($data)) == 3 )
-		{
-			$m = new shopVacationPluginDateModel;
-			$m->insert($data);
-		}
+			self::m()->insert($data);
 	}
 	
 	
@@ -31,11 +28,22 @@ class shopVacationPlugin extends shopPlugin
 	public function backendOrder($order)
 	{
 		$html = '';
-		$m = new shopVacationPluginDateModel;
-		$data = $m->getByField('order_id',$order['id']);
-		print_r($data);
+		if ( $data = self::m()->getByField('order_id',$order['id']) )
+		{
+			extract($data);
+			$html = "Vacation: $start - $finish";
+		}
 		return array(
 			'info_section' => $html
 		);
+	}
+	
+	
+	static protected function m()
+	{
+		static $m;
+		if ( !$m )
+			$m = new shopVacationPluginDateModel;
+		return $m;
 	}
 }
